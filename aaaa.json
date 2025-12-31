@@ -1,0 +1,78 @@
+{
+    "date": "2025-12-31",
+    "items": [
+        {
+            "name": "زبادي",
+            "price": 12,
+            "quantity": 9,
+            "subtotal": 108
+        },
+        {
+            "name": "جبنه لايت",
+            "price": 50,
+            "quantity": 2,
+            "subtotal": 100
+        },
+        {
+            "name": "مخلل",
+            "price": 30,
+            "quantity": 2,
+            "subtotal": 60
+        },
+        {
+            "name": "زيتون",
+            "price": 50,
+            "quantity": 2,
+            "subtotal": 100
+        },
+        {
+            "name": "فلفل الوان",
+            "price": 12,
+            "quantity": 2,
+            "subtotal": 24
+        },
+        {
+            "name": "رايس كيك",
+            "price": 31,
+            "quantity": 12,
+            "subtotal": 372
+        },
+        {
+            "name": "شيكولاته",
+            "price": 15,
+            "quantity": 18,
+            "subtotal": 270
+        },
+        {
+            "name": "توابل",
+            "price": 13,
+            "quantity": 3,
+            "subtotal": 39
+        },
+        {
+            "name": "عيش",
+            "price": 12,
+            "quantity": 12,
+            "subtotal": 144
+        },
+        {
+            "name": "صلصه",
+            "price": 28,
+            "quantity": 4,
+            "subtotal": 112
+        },
+        {
+            "name": "مكرونه",
+            "price": 32,
+            "quantity": 2,
+            "subtotal": 64
+        },
+        {
+            "name": "جبنه نستو",
+            "price": 110,
+            "quantity": 1,
+            "subtotal": 110
+        }
+    ],
+    "total": 1503
+}

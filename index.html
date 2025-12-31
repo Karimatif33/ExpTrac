@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق تتبع المصروفات المتقدم</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header with Controls -->
+        <div class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()">☰</button>
+                    <div class="header-title">
+                        <h1>💰 تتبع المصروفات</h1>
+                        <div class="date" id="currentDate"></div>
+                    </div>
+                </div>
+                <div class="header-controls">
+                    <button class="icon-btn" onclick="toggleDarkMode()" title="الوضع الليلي">🌙</button>
+                    <button class="icon-btn" onclick="openAddItemModal()" title="إضافة صنف">➕</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-label">مصروفات اليوم</div>
+                <div class="stat-value" id="todayTotal">0 جنيه</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-label">مصروفات الشهر</div>
+                <div class="stat-value" id="monthTotal">0 جنيه</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🛒</div>
+                <div class="stat-label">عدد الأصناف</div>
+                <div class="stat-value" id="itemsCount">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-label">متوسط اليومي</div>
+                <div class="stat-value" id="avgDaily">0 جنيه</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-label">الميزانية المتبقية</div>
+                <div class="stat-value" id="budgetRemaining">غير محدد</div>
+            </div>
+        </div>
+
+        <!-- Sidebar Navigation -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>القائمة</h3>
+                <button class="close-btn" onclick="toggleMenu()">✕</button>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" onclick="showTab('items')">🛍️ الأصناف</button>
+                <button class="nav-btn" onclick="showTab('analytics')">📊 التحليلات</button>
+                <button class="nav-btn" onclick="showTab('budget')">💳 الميزانية</button>
+                <button class="nav-btn" onclick="showTab('weekly')">📅 الخطة الأسبوعية</button>
+                <button class="nav-btn" onclick="showTab('monthly')">📆 الخطة الشهرية</button>
+                <button class="nav-btn" onclick="showTab('history')">📜 السجل</button>
+            </nav>
+            <div class="sidebar-actions">
+                <h4>الإجراءات السريعة</h4>
+                <button class="action-btn" onclick="saveTodayExpenses()">💾 حفظ اليوم</button>
+                <button class="action-btn" onclick="resetQuantities()">🔄 تصفير</button>
+                <button class="action-btn" onclick="exportToCSV()">📥 تصدير CSV</button>
+                <button class="action-btn" onclick="openAddItemModal()">➕ صنف جديد</button>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+
+            <!-- Items Tab -->
+            <div class="tab-content active" id="items-tab">
+                <div class="date-selector">
+                    <label for="expenseDate">تاريخ المصروفات:</label>
+                    <input type="date" id="expenseDate" onchange="loadDateExpenses()" value="">
+                </div>
+                <div class="search-filter">
+                    <input type="text" class="search-box" id="searchBox" placeholder="🔍 ابحث..."
+                        oninput="handleSearch()">
+                    <select class="filter-select" id="sortFilter" onchange="applySorting()">
+                        <option value="name">الاسم</option>
+                        <option value="price-low">السعر ↑</option>
+                        <option value="price-high">السعر ↓</option>
+                        <option value="quantity">الكمية</option>
+                    </select>
+                </div>
+
+                <div class="items-grid" id="itemsGrid"></div>
+
+                <div class="total-banner">
+                    <div class="banner-content">
+                        <span class="banner-label">إجمالي اليوم</span>
+                        <span class="banner-value" id="dailyTotalBanner">0</span>
+                        <span class="banner-currency">جنيه</span>
+                    </div>
+                </div>
+
+                <div class="capture-area" id="captureArea">
+                    <h3 class="capture-title">📦 ملخص الطلب</h3>
+                    <div class="capture-items" id="captureItems"></div>
+                    <div class="capture-total">
+                        <span>الإجمالي</span>
+                        <span id="captureTotal">0 جنيه</span>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-success" onclick="saveDateExpenses()">💾 حفظ</button>
+                    <button class="btn btn-warning" onclick="resetQuantities()">🔄 تصفير</button>
+                    <button class="btn btn-info" onclick="captureAsImage()">📸 صورة</button>
+                    <button class="btn btn-danger" onclick="clearAllData()">🗑️ مسح</button>
+                </div>
+            </div>
+
+            <!-- Analytics Tab -->
+            <div class="tab-content" id="analytics-tab">
+                <div class="analytics-container">
+                    <h2>📊 التحليلات والإحصائيات</h2>
+                    <div class="analytics-grid" id="analyticsGrid"></div>
+                    <div class="chart-section">
+                        <h3>الرسم البياني الشهري</h3>
+                        <div id="monthlyChart"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Budget Tab -->
+            <div class="tab-content" id="budget-tab">
+                <div class="budget-container">
+                    <h2>💳 إدارة الميزانية</h2>
+                    <div class="budget-setup">
+                        <div class="form-group">
+                            <label>الميزانية الشهرية (جنيه)</label>
+                            <div class="input-group">
+                                <input type="number" id="budgetAmount" placeholder="أدخل الميزانية" min="0" step="100">
+                                <button class="btn btn-primary" onclick="setBudget()">تعيين</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="budget-display" id="budgetDisplay"></div>
+                </div>
+            </div>
+
+            <!-- Weekly Plan Tab -->
+            <div class="tab-content" id="weekly-tab">
+                <div class="planning-container">
+                    <h2>📅 الخطة الأسبوعية</h2>
+                    <div class="plan-controls">
+                        <button class="btn btn-primary" onclick="prevWeek()">← الأسبوع السابق</button>
+                        <span class="current-week" id="currentWeekDisplay"></span>
+                        <button class="btn btn-primary" onclick="nextWeek()">الأسبوع التالي →</button>
+                    </div>
+                    <div class="weekly-grid" id="weeklyGrid"></div>
+                    <div class="weekly-summary" id="weeklySummary"></div>
+                </div>
+            </div>
+
+            <!-- Monthly Plan Tab -->
+            <div class="tab-content" id="monthly-tab">
+                <div class="planning-container">
+                    <h2>📆 الخطة الشهرية</h2>
+                    <div class="plan-controls">
+                        <button class="btn btn-primary" onclick="prevMonth()">← الشهر السابق</button>
+                        <span class="current-month" id="currentMonthDisplay"></span>
+                        <button class="btn btn-primary" onclick="nextMonth()">الشهر التالي →</button>
+                    </div>
+                    <div class="month-calendar" id="monthCalendar"></div>
+                    <div class="monthly-summary" id="monthlySummary"></div>
+                </div>
+            </div>
+
+            <!-- History Tab -->
+            <div class="tab-content" id="history-tab">
+                <div class="history-section">
+                    <h2>📜 سجل المصروفات</h2>
+
+                    <div class="history-controls">
+                        <input type="date" id="startDate" onchange="filterHistory()">
+                        <input type="date" id="endDate" onchange="filterHistory()">
+                        <button class="btn btn-secondary" onclick="resetDateFilter()">إعادة تعيين</button>
+                        <button class="btn btn-info" onclick="toggleChartView()">📊 الرسم</button>
+                    </div>
+
+                    <div class="chart-container" id="chartContainer"></div>
+                    <div id="historyList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Add Item -->
+    <div class="modal" id="addItemModal">
+        <div class="modal-backdrop" onclick="closeModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>إضافة صنف جديد</h2>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <form onsubmit="addNewItem(); return false;" class="modal-form">
+                <div class="form-group">
+                    <label>اسم الصنف</label>
+                    <input type="text" id="newItemName" placeholder="مثال: شاي" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>السعر (جنيه)</label>
+                        <input type="number" id="newItemPrice" placeholder="10" min="0" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الفئة</label>
+                        <select id="newItemCategory">
+                            <option value="غذاء">🍔 غذاء</option>
+                            <option value="شراب">🍹 شراب</option>
+                            <option value="أخرى">📦 أخرى</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success" style="width: 100%;">إضافة</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: JSON Viewer -->
+    <div class="modal" id="jsonModal">
+        <div class="modal-backdrop" onclick="closeJSONModal()"></div>
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h2>عرض JSON</h2>
+                <button class="modal-close" onclick="closeJSONModal()">✕</button>
+            </div>
+            <pre id="jsonOutput" class="json-viewer"></pre>
+        </div>
+    </div>
+
+    <!-- Modal: Item Details -->
+    <div class="modal" id="detailsModal">
+        <div class="modal-backdrop" onclick="closeDetailsModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="detailsTitle">تفاصيل الصنف</h2>
+                <button class="modal-close" onclick="closeDetailsModal()">✕</button>
+            </div>
+            <div id="detailsContent" class="modal-details"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
