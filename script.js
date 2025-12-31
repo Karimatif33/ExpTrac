@@ -11,8 +11,8 @@ const defaultItems = [
     { name: "صلصه", price: 80, category: "غذاء" },
     { name: "مكرونه", price: 65, category: "غذاء" },
     { name: "جبنه نستو", price: 110, category: "غذاء" },
-    { name: "قهوة", price: 25, category: "شراب" },
-    { name: "عصير", price: 15, category: "شراب" }
+    { name: "مناديل", price: 100, category: "أخرى" },
+    { name: "نسكافيه", price: 220, category: "شراب" }
 ];
 
 let items = [];
