@@ -1,18 +1,20 @@
 const defaultItems = [
-    { name: "زبادي", price: 20, category: "غذاء" },
-    { name: "جبنه لايت", price: 50, category: "غذاء" },
+    { name: "زبادي", price: 12, category: "غذاء" },
+    { name: "جبنه لايت", price: 28, category: "غذاء" },
+    { name: "جبنه قريش", price: 28, category: "غذاء" },
     { name: "مخلل", price: 30, category: "غذاء" },
-    { name: "زيتون", price: 40, category: "غذاء" },
-    { name: "فلفل الوان", price: 30, category: "غذاء" },
-    { name: "رايس كيك", price: 90, category: "أخرى" },
-    { name: "شيكولاته", price: 90, category: "غذاء" },
-    { name: "توابل", price: 30, category: "غذاء" },
-    { name: "عيش", price: 35, category: "غذاء" },
-    { name: "صلصه", price: 80, category: "غذاء" },
-    { name: "مكرونه", price: 65, category: "غذاء" },
-    { name: "جبنه نستو", price: 110, category: "غذاء" },
+    { name: "زيتون", price: 50, category: "غذاء" },
+    { name: "فلفل الوان", price: 12, category: "غذاء" },
+    { name: "رايس كيك", price: 30, category: "أخرى" },
+    { name: "شيكولاته", price: 15, category: "غذاء" },
+    { name: "توابل", price: 13, category: "غذاء" },
+    { name: "عيش", price: 12, category: "غذاء" },
+    { name: "صلصه", price: 24, category: "غذاء" },
+    { name: "مكرونه", price: 31, category: "غذاء" },
+    { name: "تمر", price: 100, category: "غذاء" },
+    { name: "جبنه نستو", price: 60, category: "غذاء" },
     { name: "مناديل", price: 100, category: "أخرى" },
-    { name: "نسكافيه", price: 220, category: "شراب" }
+    { name: "نسكافيه", price: 230, category: "شراب" }
 ];
 
 let items = [];
